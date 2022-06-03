@@ -1,66 +1,75 @@
-# This file will be used to generate all of the schema-*.json files in a bundle
 schema: draft-07
-name: "gcp-cloud-function-firestore"
-description: ""
-ref: github.com/YOUR_NAME_HERE/gcp-cloud-function-firestore
-access: "public"
-type: "bundle"
+name: gcp-cloud-function-firestore
+description: "A Cloud Function triggered off of Firestore events"
+ref: github.com/massdriver-cloud/massdriver-bundles
+access: public
+type: bundle
 
 steps:
   - path: src
     provisioner: terraform
 
-# schema-params.json
-# JSON Schema sans-fields above
 params:
   examples:
-    - foo: US-West 2 VPC
-    - foo: US-East 1 VPC
+    - __name: Firestore Document Update
+      cloud_function_configuration:
+        runtime: Node.js 16
+        minimum_instances: 0
+      firestore_trigger: Document Update
+      document_path: users/{username}
   required:
-    - foo
+    - cloud_function_configuration
+    - firestore_trigger
+    - document_path
   properties:
-    foo:
+    cloud_function_configuration:
+      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-function-configuration.json
+    firestore_trigger:
       type: string
-      title: Foo
-      description: Name of gcp-cloud-function-firestore
-      default: ""
-      examples:
-        - US-West 2 VPC
-        - US-East 1 VPC
+      title: Firestore Trigger
+      description: The document event to trigger off of.
+      enum:
+        - Document Create
+        - Document Update
+        - Document Delete
+        - Document Create, Update, or Delete
+    document_path:
+      type: string
+      title: Document Path
+      description: "The document path to trigger events off of."
+      minLength: 1
+      # It's hard to find docs on this, testing can discover it so we're leaving it appropriately large for now
+      maxLength: 200
 
-# schema-connections.json
-# Named list of input connections (artifacts) (map[name]artifact)
 connections:
-  properties: {}
-  # required:
-  # - aws_authentication
-  # - network
-  # properties:
-  #   aws_authentication:
-  #     $ref: massdriver/aws-iam-role
-  #   network:
-  #     $ref: massdriver/aws-regional-cloud
+  required:
+    - subnetwork
+    - gcp_authentication
+    - firestore
+  properties:
+    subnetwork:
+      $ref: massdriver/gcp-subnetwork
+    gcp_authentication:
+      $ref: massdriver/gcp-service-account
+    firestore:
+      $ref: massdriver/gcp-firebase-authentication
 
-# schema-artifacts.json
-# Named list of output artifacts  (map[name]artifact)
 artifacts:
-  properties: {}
-  # required:
-  #   - network
-  # properties:
-  #   network:
-  #     $ref: massdriver/aws-regional-cloud
+  required:
+    - cloud_function
+  properties:
+    cloud_function:
+      $ref: massdriver/gcp-cloud-function
 
-# schema-ui.json
-# List of form customizations for params-schema
 ui:
   ui:order:
-    - "*"
-  ## set top level ui:wiget
-  # secret_key:
-  #    ui:widget: "password"
-  ## Set key in an array of objects
-  # secrets:
-  #   items:
-  #     mdKeyId:
-  #       ui:widget: "hidden"
+    - cloud_function_configuration
+    - firestore_trigger
+    - document_path
+  cloud_function_configuration:
+    ui:order:
+      - runtime
+      - entrypoint
+      - memory_mb
+      - minimum_instances
+      - maximum_instances
