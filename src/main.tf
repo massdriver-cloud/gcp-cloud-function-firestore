@@ -10,7 +10,7 @@ locals {
 }
 
 module "cloud_functions" {
-  source  = "github.com/massdriver-cloud/terraform-modules//google-cloud-function?ref=9201b9f"
+  source  = "github.com/massdriver-cloud/terraform-modules//gcp-cloud-function?ref=c336d59"
   runtime = var.cloud_function_configuration.runtime
 }
 
