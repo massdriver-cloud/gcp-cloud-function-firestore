@@ -1,7 +1,7 @@
 schema: draft-07
 name: gcp-cloud-function-firestore
 description: "A Cloud Function triggered off of Firestore events"
-ref: github.com/massdriver-cloud/gcp-cloud-function-firestore
+source_url: github.com/massdriver-cloud/gcp-cloud-function-firestore
 access: public
 type: bundle
 
