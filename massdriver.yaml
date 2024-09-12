@@ -1,9 +1,10 @@
 schema: draft-07
 name: gcp-cloud-function-firestore
-description: "A Cloud Function triggered off of Firestore events"
+description: A Cloud Function triggered off of Firestore events
 source_url: github.com/massdriver-cloud/gcp-cloud-function-firestore
 access: public
 type: infrastructure
+
 params:
   examples:
     - __name: Firestore Document Update
@@ -31,10 +32,11 @@ params:
     document_path:
       type: string
       title: Document Path
-      description: "The document path to trigger events off of."
+      description: The document path to trigger events off of.
       minLength: 1
       # It's hard to find docs on this, testing can discover it so we're leaving it appropriately large for now
       maxLength: 200
+
 connections:
   required:
     - subnetwork
@@ -47,12 +49,14 @@ connections:
       $ref: massdriver/gcp-service-account
     firestore:
       $ref: massdriver/gcp-firebase-authentication
+
 artifacts:
   required:
     - cloud_function
   properties:
     cloud_function:
       $ref: massdriver/gcp-cloud-function
+
 ui:
   ui:order:
     - cloud_function_configuration
