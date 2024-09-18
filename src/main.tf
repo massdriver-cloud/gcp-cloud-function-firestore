@@ -33,7 +33,7 @@ resource "google_cloudfunctions_function" "main" {
   event_trigger {
     # https://cloud.google.com/functions/docs/calling/cloud-firestore#event_types
     event_type = local.event_type
-    resource   = "projects/${var.firestore.data.infrastructure.grn}/databases/(default)/documents/${var.document_path}"
+    resource   = "projects/${var.firestore.data.infrastructure.id}/databases/(default)/documents/${var.document_path}"
     failure_policy {
       retry = false
     }

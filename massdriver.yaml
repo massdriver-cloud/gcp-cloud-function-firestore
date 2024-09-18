@@ -1,9 +1,9 @@
 schema: draft-07
 name: gcp-cloud-function-firestore
-description: "A Cloud Function triggered off of Firestore events"
+description: A Cloud Function triggered off of Firestore events
 source_url: github.com/massdriver-cloud/gcp-cloud-function-firestore
 access: public
-type: bundle
+type: infrastructure
 
 params:
   examples:
@@ -32,7 +32,7 @@ params:
     document_path:
       type: string
       title: Document Path
-      description: "The document path to trigger events off of."
+      description: The document path to trigger events off of.
       minLength: 1
       # It's hard to find docs on this, testing can discover it so we're leaving it appropriately large for now
       maxLength: 200
