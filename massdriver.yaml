@@ -1,71 +1,72 @@
 schema: draft-07
 name: gcp-cloud-function-firestore
+version: 1.0.0
 description: A Cloud Function triggered off of Firestore events
-source_url: github.com/massdriver-cloud/gcp-cloud-function-firestore
-access: public
-type: infrastructure
-
+source_url: https://github.com/massdriver-cloud/gcp-cloud-function-firestore
+type: application
 params:
   examples:
-    - __name: Firestore Document Update
-      cloud_function_configuration:
-        runtime: Node.js 16
-        minimum_instances: 0
-      firestore_trigger: Document Update
-      document_path: users/{username}
+  - __name: Firestore Document Update
+    cloud_function_configuration:
+      runtime: Node.js 16
+      minimum_instances: 0
+    firestore_trigger: Document Update
+    document_path: users/{username}
   required:
-    - cloud_function_configuration
-    - firestore_trigger
-    - document_path
+  - cloud_function_configuration
+  - firestore_trigger
+  - document_path
   properties:
     cloud_function_configuration:
-      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-function-configuration.json
+      "$ref": https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/gcp-cloud-function-configuration.json
     firestore_trigger:
       type: string
       title: Firestore Trigger
       description: The document event to trigger off of.
       enum:
-        - Document Create
-        - Document Update
-        - Document Delete
-        - Document Create, Update, or Delete
+      - Document Create
+      - Document Update
+      - Document Delete
+      - Document Create, Update, or Delete
     document_path:
       type: string
       title: Document Path
       description: The document path to trigger events off of.
       minLength: 1
-      # It's hard to find docs on this, testing can discover it so we're leaving it appropriately large for now
       maxLength: 200
-
 connections:
   required:
-    - subnetwork
-    - gcp_authentication
-    - firestore
+  - subnetwork
+  - gcp_authentication
+  - firestore
   properties:
     subnetwork:
-      $ref: massdriver/gcp-subnetwork
+      "$ref": massdriver/gcp-subnetwork
     gcp_authentication:
-      $ref: massdriver/gcp-service-account
+      "$ref": massdriver/gcp-service-account
     firestore:
-      $ref: massdriver/gcp-firebase-authentication
-
+      "$ref": massdriver/gcp-firebase-authentication
 artifacts:
   required:
-    - cloud_function
+  - cloud_function
   properties:
     cloud_function:
-      $ref: massdriver/gcp-cloud-function
-
+      "$ref": massdriver/gcp-cloud-function
 ui:
   ui:order:
-    - cloud_function_configuration
-    - firestore_trigger
-    - document_path
+  - cloud_function_configuration
+  - firestore_trigger
+  - document_path
   cloud_function_configuration:
     ui:order:
-      - runtime
-      - entrypoint
-      - memory_mb
-      - minimum_instances
-      - maximum_instances
+    - runtime
+    - entrypoint
+    - memory_mb
+    - minimum_instances
+    - maximum_instances
+steps:
+- path: src
+  provisioner: opentofu
+  config:
+    checkov:
+      enable: true
