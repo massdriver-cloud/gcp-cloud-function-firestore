@@ -21,8 +21,7 @@ locals {
 }
 
 resource "massdriver_artifact" "cloud_function" {
-  field                = "cloud_function"
-  provider_resource_id = google_cloudfunctions_function.main.id
-  name                 = "GCP Cloud Function Firestore ${var.md_metadata.name_prefix} (${google_cloudfunctions_function.main.id})"
-  artifact             = jsonencode(local.artifact_cloud_function)
+  field    = "cloud_function"
+  name     = "GCP Cloud Function Firestore ${var.md_metadata.name_prefix} (${google_cloudfunctions_function.main.id})"
+  artifact = jsonencode(local.artifact_cloud_function)
 }
