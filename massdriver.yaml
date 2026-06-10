@@ -40,17 +40,17 @@ connections:
   - firestore
   properties:
     subnetwork:
-      "$ref": massdriver/gcp-subnetwork
+      "$ref": gcp-subnetwork
     gcp_authentication:
-      "$ref": massdriver/gcp-service-account
+      "$ref": gcp-service-account
     firestore:
-      "$ref": massdriver/gcp-firebase-authentication
+      "$ref": gcp-firebase-authentication
 artifacts:
   required:
   - cloud_function
   properties:
     cloud_function:
-      "$ref": massdriver/gcp-cloud-function
+      "$ref": gcp-cloud-function
 ui:
   ui:order:
   - cloud_function_configuration
